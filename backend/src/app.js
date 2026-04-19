@@ -12,18 +12,46 @@ const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
 const app = express();
 
+const normalizeOrigin = (value = "") => value.trim().replace(/\/+$/, "");
+
 // ── Security headers ──────────────────────────────────────────────────────────
 app.use(helmet());
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.FRONTEND_BASE_URL || "http://localhost:5173")
   .split(",")
-  .map((origin) => origin.trim());
+  .map((origin) => normalizeOrigin(origin))
+  .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) {
+    return true;
+  }
+
+  const normalizedOrigin = normalizeOrigin(origin);
+
+  if (allowedOrigins.includes("*")) {
+    return true;
+  }
+
+  if (allowedOrigins.includes(normalizedOrigin)) {
+    return true;
+  }
+
+  // Allow wildcard origin values such as *.vercel.app
+  return allowedOrigins.some((allowed) => {
+    if (!allowed.startsWith("*.")) {
+      return false;
+    }
+
+    return normalizedOrigin.endsWith(allowed.slice(1));
+  });
+};
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
