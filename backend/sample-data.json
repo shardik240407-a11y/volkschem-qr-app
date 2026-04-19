@@ -1,0 +1,17 @@
+{
+  "product": {
+    "name": "Super Doko",
+    "technical_name": "Azoxystrobin 23% SC",
+    "description": "Broad-spectrum fungicide for crop disease control.",
+    "company_info": "Volkschem Crop Science PVT LTD\nSymbol of Quality\nAddress: India\nSupport: support@volkschem.com",
+    "product_image": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    "label_url": "https://example.com/label.pdf",
+    "leaflet_url": "https://example.com/leaflet.pdf"
+  },
+  "batch": {
+    "batch_no": "BN123",
+    "manufacturing_date": "2026-01-15",
+    "expiry_date": "2028-01-14",
+    "price": 299
+  }
+}
